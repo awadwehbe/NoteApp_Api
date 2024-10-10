@@ -118,7 +118,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT=BASE_DIR/'assets'#2-deploy
-STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage" #3-deploy
+#STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage" #3-deploy
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
