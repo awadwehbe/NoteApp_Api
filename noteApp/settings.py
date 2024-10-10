@@ -17,7 +17,7 @@ DEBUG = config('DEBUG',cast=bool)
 
 # settings.py
 
-ALLOWED_HOSTS = ['noteapp-api-1r.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["noteapp-api-1r.onrender.com", 'localhost', '127.0.0.1']
 
 
 # Application definition
