@@ -598,101 +598,15 @@ class RefreshTokenView(APIView):
     permission_classes = [AllowAny]  # You may set this to IsAuthenticated based on your use case
 
     @swagger_auto_schema(
-    operation_summary="User Sign-Up",
-    operation_description="""
-    Create a new user account by providing email, first name, last name, and password. 
-    The system will generate an OTP for verification and send it back in the response.
-    """,
-    request_body=openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        required=["email", "password", "firstName", "lastName"],
-        properties={
-            'email': openapi.Schema(type=openapi.TYPE_STRING, description='User email address'),
-            'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password (must be at least 8 characters)'),
-            'firstName': openapi.Schema(type=openapi.TYPE_STRING, description='First name of the user'),
-            'lastName': openapi.Schema(type=openapi.TYPE_STRING, description='Last name of the user'),
-        },
-        example={
-            "firstName": "John",
-            "lastName": "Doe",
-            "email": "john.doe@example.com",
-            "password": "password123"
+        operation_summary="User Sign-Up",
+        operation_description="Create a new user account by providing email, first name, last name, and password.",
+        request_body=SignUpSerializer,
+        responses={
+            200: "Access token refresh successfully",
+            401: "refresh token not",
+            500: "Internal server error"
         }
-    ),
-    responses={
-        201: openapi.Response(
-            description="User successfully created",
-            examples={
-                "application/json": {
-                    "statusCode": 201,
-                    "message": "User created successfully",
-                    "data": {
-                        "firstName": "John",
-                        "lastName": "Doe",
-                        "email": "john.doe@example.com",
-                        "otp": 123456
-                    }
-                }
-            },
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'statusCode': openapi.Schema(type=openapi.TYPE_INTEGER, description="HTTP status code"),
-                    'message': openapi.Schema(type=openapi.TYPE_STRING, description="Response message"),
-                    'data': openapi.Schema(
-                        type=openapi.TYPE_OBJECT,
-                        properties={
-                            'firstName': openapi.Schema(type=openapi.TYPE_STRING, description="User's first name"),
-                            'lastName': openapi.Schema(type=openapi.TYPE_STRING, description="User's last name"),
-                            'email': openapi.Schema(type=openapi.TYPE_STRING, description="User's email"),
-                            'otp': openapi.Schema(type=openapi.TYPE_INTEGER, description="Generated OTP for verification")
-                        }
-                    )
-                }
-            )
-        ),
-        400: openapi.Response(
-            description="Validation error (e.g., email already exists)",
-            examples={
-                "application/json": {
-                    "statusCode": 400,
-                    "message": "Validation error",
-                    "errors": {
-                        "email": ["Email already exists"]
-                    }
-                }
-            },
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'statusCode': openapi.Schema(type=openapi.TYPE_INTEGER, description="HTTP status code"),
-                    'message': openapi.Schema(type=openapi.TYPE_STRING, description="Error message"),
-                    'errors': openapi.Schema(type=openapi.TYPE_OBJECT, additional_properties=openapi.Schema(type=openapi.TYPE_STRING))
-                }
-            )
-        ),
-        500: openapi.Response(
-            description="Internal server error",
-            examples={
-                "application/json": {
-                    "statusCode": 500,
-                    "message": "Internal server error",
-                    "error": "Detailed error message for debugging"
-                }
-            },
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'statusCode': openapi.Schema(type=openapi.TYPE_INTEGER, description="HTTP status code"),
-                    'message': openapi.Schema(type=openapi.TYPE_STRING, description="Error message"),
-                    'error': openapi.Schema(type=openapi.TYPE_STRING, description="Detailed error information")
-                }
-            )
-        )
-    },
-    tags=["User Authentication"],
-    security=[]
-)
+    )
     def post(self, request, *args, **kwargs):
         # Get the Authorization header
         auth = get_authorization_header(request).split()
