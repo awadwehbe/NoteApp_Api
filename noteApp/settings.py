@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.middleware.WhiteNoiseMiddleware', #1-deploy
+    #'django.middleware.WhiteNoiseMiddleware', #1-deploy
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Correct the spelling here
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -171,3 +172,5 @@ SWAGGER_SETTINGS = {
       }
    }
 }
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
