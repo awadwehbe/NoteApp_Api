@@ -16,7 +16,7 @@ from .serializers import PasswordResetRequestSerializer
 #
 from api.schemas.user_schemas import signup_request_schema, signup_success_response_schema, error_response_schema
 from api.schemas.swagger_utils import generate_swagger_auto_schema
-
+from django.core.mail import send_mail
 #
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -70,7 +70,7 @@ class SignUpView(APIView):
                 otp_instance.otp = otp
                 otp_instance.created_at = timezone.now()
                 otp_instance.save()
-                
+
                 #send otp via email
                 send_mail(
                     subject="Your OTP for Account Verification",
@@ -365,13 +365,13 @@ class RequestResetPasswordView(APIView):
             user.save()
 
             # Send OTP to the user's email
-            # send_mail(
-            #     subject="Password Reset OTP",
-            #     message=f"Your OTP code is {otp}. It will expire in 10 minutes.",
-            #     from_email=settings.DEFAULT_FROM_EMAIL,
-            #     recipient_list=[user.email],
-            #     fail_silently=False,
-            # )
+            send_mail(
+                subject="Password Reset OTP",
+                message=f"Your OTP code is {otp}. It will expire in 10 minutes.",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+             )
 
             return Response({
                 "statusCode": 200,
@@ -525,14 +525,14 @@ class RequestNewPasswordResetView(APIView):
             user.otp_created_at = timezone.now()  # Assuming you have this field
             user.save()
 
-            # Send OTP to the user's email
-            # send_mail(
-            #     subject="New Password Reset OTP",
-            #     message=f"Your new OTP code is {otp}. It will expire in 10 minutes.",
-            #     from_email=settings.DEFAULT_FROM_EMAIL,
-            #     recipient_list=[user.email],
-            #     fail_silently=False,
-            # )
+            #Send OTP to the user's email
+            send_mail(
+                subject="New Password Reset OTP",
+                message=f"Your new OTP code is {otp}. It will expire in 10 minutes.",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+             )
 
             return Response({
                 "statusCode": 200,
