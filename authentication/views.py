@@ -70,6 +70,17 @@ class SignUpView(APIView):
                 otp_instance.otp = otp
                 otp_instance.created_at = timezone.now()
                 otp_instance.save()
+                
+                #send otp via email
+                send_mail(
+                    subject="Your OTP for Account Verification",
+                    message=f"Your OTP code is {otp}. It will expire in 10 minutes.",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[instance.email],  # Send to the user's email
+                    fail_silently=False,
+                )
+
+
 
                 # Successful response
                 return Response({
