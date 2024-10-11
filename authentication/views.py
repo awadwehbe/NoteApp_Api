@@ -13,6 +13,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from datetime import timedelta
 from .serializers import PasswordResetRequestSerializer
+#
+from api.schemas.user_schemas import signup_request_schema, signup_success_response_schema, error_response_schema
+from api.schemas.swagger_utils import generate_swagger_auto_schema
 
 #
 from drf_yasg.utils import swagger_auto_schema
@@ -40,16 +43,15 @@ class SignUpView(APIView):
     authentication_classes = []  # No authentication required
     permission_classes = [AllowAny]  # Allow any user (even unauthenticated) to access this view
 
-    @swagger_auto_schema(
+    @generate_swagger_auto_schema(
         operation_summary="User Sign-Up",
         operation_description="Create a new user account by providing email, first name, last name, and password.",
-        request_body=SignUpSerializer,
-        responses={
-            201: "User successfully created",
-            400: "Validation error (e.g., email already exists)",
-            500: "Internal server error"
-        }
+        request_schema=signup_request_schema,
+        success_response_schema=signup_success_response_schema,
+        error_response_schema=error_response_schema,
+        tags=["User Authentication"]
     )
+
     def post(self, request, *args, **kwargs):
         try:
             serializer = SignUpSerializer(data=request.data)

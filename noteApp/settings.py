@@ -17,7 +17,7 @@ DEBUG = config('DEBUG',cast=bool)
 
 # settings.py
 
-ALLOWED_HOSTS = ["noteapp-api-1r.onrender.com", 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['noteapp-api-1r.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -174,3 +174,12 @@ SWAGGER_SETTINGS = {
 }
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Security settings
+# SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
+# SESSION_COOKIE_SECURE = True  # Ensure cookies are only sent over HTTPS
+# CSRF_COOKIE_SECURE = True  # Ensure CSRF cookies are only sent over HTTPS
+# SECURE_BROWSER_XSS_FILTER = True  # Protect against XSS attacks
+# SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from guessing content types
+# SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security (HSTS)
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
